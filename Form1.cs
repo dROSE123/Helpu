@@ -3,16 +3,23 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using INFO2017;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace INFO2017
 {
     public partial class Form1 : Form
     {
+
+        SqlConnection conexiune = null;
+
         public Form1()
         {
             InitializeComponent();
             //FormBorderStyle = FormBorderStyle.None;
             //WindowState = FormWindowState.Maximized;
+
+            conexiune = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Poriecte Visual\INFO2017\INFO2017\Database1.mdf;Integrated Security=True");
 
         }
 
@@ -43,88 +50,34 @@ namespace INFO2017
 
         private void button2_Click(object sender, EventArgs e)
         {
+            conexiune.Open();
 
-            //string strXml;
-            //XmlDocument doc = new XmlDocument();
-            //try
-            //{
-            //    using (StreamReader sr = new StreamReader("XMLFile1.xml"))
-            //    {
-            //        strXml = sr.ReadToEnd();
-            //    }
+            int i = 0;
 
-            //    doc.LoadXml(strXml);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.ToString());
-            //}
+            string encID = Crypto.Encrypt(textBox3.Text);
+            string encPASS = Crypto.Encrypt(textBox4.Text);
 
-            //public static bool IsValidLogin(string user, string password)
-            //{
-
-            //    XDocument doc = XDocument.Load("XMLFile1.xml");
-
-            //    return doc.Descendants("id")
-            //                  .Where(Subroot => Subroot.Attribute("ID").Value == user
-            //                         && Subroot.Attribute("Parola").Value == password)
-            //                  .Any();
-            //}
-
-            XmlDocument doc = new XmlDocument();
-
-            string filename = @"D:\Poriecte Visual\INFO2017\INFO2017\bin\Debug\XMLFile1.xml";
-
-            doc.Load(filename);
-
-            var Username = "";
-            var Password = "";
-
-            foreach (XmlNode node in doc.SelectNodes("//Angajat"))
+            SqlCommand cmd = conexiune.CreateCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "select * from Angajatori where ID='" + encID + "'and Parola='" + encPASS + "'";
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            i = Convert.ToInt32(dt.Rows.Count.ToString());
+            if (i != 0)
             {
-                Username = node.SelectSingleNode(".//ID").InnerText;
-                Password = node.SelectSingleNode(".//Parola").InnerText;
-
-                if (( Username.Equals(textBox3.Text) && Password.Equals(textBox4.Text) ) || ( textBox3.Text == "admin" && textBox4.Text == "admin" ) )
-                {
-                    Form a = new Form4();
-                    a.Show();
-                    this.Hide();
-                    break;
-                }
-
-                else
-                {
-                   MessageBox.Show("Id sau parola gresite");
-                    break;
-                }
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            string dir = textBox5.Text;
-            var sr = new StreamReader("data\\" + dir + "//data.ls");
-
-            string encuser = sr.ReadLine();
-            string encpass = sr.ReadLine();
-
-            string decuser = Crypto.Decrypt(encuser);
-            string decpass = Crypto.Decrypt(encpass);
-
-            if(textBox5.Text == decuser && textBox6.Text == decpass)
-            {
-                MessageBox.Show("Wellcome to the private area!");
-                this.Hide();
+                MessageBox.Show("Bine ati venit!");
                 Form a = new Form4();
                 a.Show();
+                this.Hide();
 
             }
             else
             {
-                MessageBox.Show("Sorry, user or password are wrong :(");
+                MessageBox.Show("User sau parola incorecte!");
             }
-            
+
+            conexiune.Close();
 
         }
     }

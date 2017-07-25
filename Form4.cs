@@ -12,9 +12,9 @@ using System.Speech.Recognition;
 using System.Threading;
 using System.IO;
 using Microsoft.Office.Interop.Word;
-using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using Microsoft.Office.Interop.Excel;
 
 namespace INFO2017
 {
@@ -25,6 +25,7 @@ namespace INFO2017
         PromptBuilder pb = new PromptBuilder();
         SpeechRecognitionEngine sre = new SpeechRecognitionEngine();
 
+
         public Form4()
         {
             InitializeComponent();
@@ -32,36 +33,19 @@ namespace INFO2017
             button4.Enabled = false;
         }
 
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    SpeechSynthesizer s = new SpeechSynthesizer();
-        //    switch(textBox1.Text)
-        //    {
-        //        case "hello":
-        //            s.Speak("Hello,Horia!");
-        //            break;
-        //        case "how are you?":
-        //            s.Speak("I'm fine.How it's going with you?");
-        //            break;
-        //        case "how old are you?":
-        //            s.Speak("yooo, men. I am a computer.I do not have an age. Fuck you! Go fuck yourself!!!");
-        //            break;
-        //        default:
-        //            s.Speak("Shaaoorrmmaa pa veataa");
-        //            break;       
-        //    }
-            
-        //}
-
-
-        //vorbire/auzire
-
         private void button3_Click(object sender, EventArgs e)
         {
             button3.Enabled = false;
             button4.Enabled = true;
 
-            list.Add(new string[] {"hello","how","facebook","thank","close", "mom","file","send","search","stop","print","alternosfera" , "word" , "excel", "ana"});
+          //  foreach (var v in ss.GetInstalledVoices().Select(v => v.VoiceInfo))
+          //  {
+          //      MessageBox.Show(v.Description);
+          //      MessageBox.Show(v.Gender.ToString());
+          //      MessageBox.Show(v.Age.ToString());
+          //  }
+
+            list.Add(new string[] { "hello", "how are you", "facebook", "thank", "close", "mom", "notepad", "send", "search", "stop", "print", "alternosfera", "word", "excel", "ana" });
             Grammar gr = new Grammar(new GrammarBuilder(list));
             try
             {
@@ -76,13 +60,16 @@ namespace INFO2017
                 MessageBox.Show(ex.Message, "Error");
             }
 
-            ss.SpeakAsync("hello ladies and gentlemen i am helpu and i am here for you");
-            ss.SpeakAsync("What can i do for you?");
-            
+            //            ss.SpeakAsync("hello ladies and gentlemen i am helpu and i am here for you");
+            //            ss.SpeakAsync("What can i do for you?");
+
         }
 
         private void Sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
+
+            ss.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
+
             //object path = null;
             switch (e.Result.Text.ToString())
             {
@@ -90,17 +77,17 @@ namespace INFO2017
                 //    ss.SpeakAsync("hello");
                 //    break;
 
-                case "how":
-                    ss.SpeakAsync("I'm fine. How are you?");
+                case "how are you":
+                    ss.SpeakAsync("I'm fine. How about you?");
                     break;
 
                 case "thank":
                     ss.SpeakAsync("The pleasure was mine");
                     break;
 
-                case "alternosfera":
-                    ss.SpeakAsync("we all know that Alternosfera is better than Metallica");
-                        break;
+           //     case "alternosfera":
+             //       ss.SpeakAsync("we all know that Alternosfera is better than Metallica");
+               //         break;
 
                 case "facebook":
                     System.Diagnostics.Process.Start("https://www.facebook.com/");
@@ -115,69 +102,98 @@ namespace INFO2017
                     System.Windows.Forms.Application.Exit();
                     break;
 
-                case "file":
+                case "notepad":
                     if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        label1.Text = openFileDialog1.FileName;
-                        ss.SpeakAsync(File.ReadAllText(label1.Text));
+                        try {
+                            label1.Text = openFileDialog1.FileName;
+                            ss.SpeakAsync(File.ReadAllText(label1.Text));
+                        }
+
+                        catch 
+                        {
+                            MessageBox.Show("Tipul fisierului invalid!");
+                        }   
                     }
                     break;
 
                 case "word":
                     if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-                        label1.Text = openFileDialog1.FileName;
-                        object readFromPath = label1.Text;
+                        try
+                        {
 
-                        Document doc = app.Documents.Open(ref readFromPath); ;
+                            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+                            label1.Text = openFileDialog1.FileName;
+                            object readFromPath = label1.Text;
 
-                        foreach (Paragraph objParagraph in doc.Paragraphs)
-                            ss.SpeakAsync(objParagraph.Range.Text.Trim());
+                            Document doc = app.Documents.Open(ref readFromPath); ;
 
-                        ((_Document)doc).Close();
-                        ((Microsoft.Office.Interop.Word._Application)app).Quit();
+                            foreach (Paragraph objParagraph in doc.Paragraphs)
+                                ss.SpeakAsync(objParagraph.Range.Text.Trim());
+
+                            ((_Document)doc).Close();
+                            ((Microsoft.Office.Interop.Word._Application)app).Quit();
+                        }
+
+                        catch
+                        {
+                            MessageBox.Show("Tipul fisierului invalid!");
+                        }
                     }
                     break;
 
                 case "excel":
                     if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        Microsoft.Office.Interop.Excel.Application _excelApp = new Microsoft.Office.Interop.Excel.Application();
-                        _excelApp.Visible = true;
-
-                        //label1.Text = openFileDialog1.FileName;
-
-                        string fileName = @"C:\Users\N.Horatiu\Desktop\a.xlsx";
-
-                        //string fileName = label1.Text;
-
-                        Workbook workbook = _excelApp.Workbooks.Open(fileName,
-                            Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                            Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                            Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                            Type.Missing, Type.Missing);
-     
-                        Worksheet worksheet = (Worksheet)workbook.Worksheets[1];
-
-                        Microsoft.Office.Interop.Excel.Range excelRange = worksheet.UsedRange;
-
-                        object[,] valueArray = (object[,])excelRange.get_Value(
-                                    XlRangeValueDataType.xlRangeValueDefault);
-
-                        for (int row = 1; row <= worksheet.UsedRange.Rows.Count; ++row)
+                        try
                         {
-                            for (int col = 1; col <= worksheet.UsedRange.Columns.Count; ++col)
+
+                            label1.Text = openFileDialog1.FileName;
+
+                            Microsoft.Office.Interop.Excel.Application xlApp;
+                            Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+                            Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+                            Microsoft.Office.Interop.Excel.Range range;
+
+                            string str;
+                            int rCnt;
+                            int cCnt;
+                            int rw = 0;
+                            int cl = 0;
+
+                            xlApp = new Microsoft.Office.Interop.Excel.Application();
+                            xlWorkBook = xlApp.Workbooks.Open(label1.Text, 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+                            xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+                            range = xlWorkSheet.UsedRange;
+                            rw = range.Rows.Count;
+                            cl = range.Columns.Count;
+
+
+                            for (rCnt = 1; rCnt <= rw; rCnt++)
                             {
-                                ss.SpeakAsync(valueArray[row, col].ToString());
+                                for (cCnt = 1; cCnt <= cl; cCnt++)
+                                {
+                                    str = (string)(range.Cells[rCnt, cCnt] as Microsoft.Office.Interop.Excel.Range).Value2;
+                                    ss.SpeakAsync(str);
+                                }
                             }
+
+                            xlWorkBook.Close(true, null, null);
+                            xlApp.Quit();
+
+                            Marshal.ReleaseComObject(xlWorkSheet);
+                            Marshal.ReleaseComObject(xlWorkBook);
+                            Marshal.ReleaseComObject(xlApp);
+
                         }
 
-                        workbook.Close(false, Type.Missing, Type.Missing);
-                        Marshal.ReleaseComObject(workbook);
+                        catch
+                        {
+                            MessageBox.Show("Tipul fisierului invalid!");
+                        }
 
-                        _excelApp.Quit();
-                        Marshal.FinalReleaseComObject(_excelApp);
                     }
                     break;
 
@@ -186,13 +202,13 @@ namespace INFO2017
                     a.Show();
                     break;
 
-                case "print":
-                    printDialog1.Document = printDocument1;
-                    if(printDialog1.ShowDialog() == DialogResult.OK)
-                    {
-                        printDocument1.Print();
-                    }
-                        break;
+             //   case "print":
+               //     if(printDialog1.ShowDialog() == DialogResult.OK)
+                 //   {
+                   //     printDialog1.Document = printDocument1;
+                   //    printDocument1.Print();
+                    //}
+                      //  break;
 
                 case "stop":
                     sre.RecognizeAsyncStop();
@@ -228,7 +244,10 @@ namespace INFO2017
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Application.Exit();
+            sre.RecognizeAsyncStop();
+            button3.Enabled = true;
+            button4.Enabled = false;
+         //   System.Windows.Forms.Application.Exit();
 
         }
 
@@ -253,5 +272,11 @@ namespace INFO2017
             Form a = new Form1();
             a.Show();
         }
+
+        private void muteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
     }
 }

@@ -31,7 +31,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.creereContUtilizatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vizualizareAngajatiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.creereContCryptatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,7 +44,8 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -54,8 +54,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.creereContUtilizatorToolStripMenuItem,
-            this.vizualizareAngajatiToolStripMenuItem,
-            this.creereContCryptatToolStripMenuItem});
+            this.vizualizareAngajatiToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(689, 24);
@@ -76,16 +75,9 @@
             this.vizualizareAngajatiToolStripMenuItem.Text = "Vizualizare angajati";
             this.vizualizareAngajatiToolStripMenuItem.Click += new System.EventHandler(this.vizualizareAngajatiToolStripMenuItem_Click);
             // 
-            // creereContCryptatToolStripMenuItem
-            // 
-            this.creereContCryptatToolStripMenuItem.Name = "creereContCryptatToolStripMenuItem";
-            this.creereContCryptatToolStripMenuItem.Size = new System.Drawing.Size(120, 20);
-            this.creereContCryptatToolStripMenuItem.Text = "Creere cont cryptat";
-            this.creereContCryptatToolStripMenuItem.Click += new System.EventHandler(this.creereContCryptatToolStripMenuItem_Click);
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(15, 246);
+            this.button1.Location = new System.Drawing.Point(15, 272);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 23);
             this.button1.TabIndex = 1;
@@ -185,7 +177,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(602, 302);
+            this.button2.Location = new System.Drawing.Point(602, 331);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 13;
@@ -193,23 +185,34 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // label6
             // 
-            this.button3.Location = new System.Drawing.Point(15, 246);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(99, 23);
-            this.button3.TabIndex = 14;
-            this.button3.Text = "Creeaza cont";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 231);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(31, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Nivel";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "1",
+            "2"});
+            this.comboBox1.Location = new System.Drawing.Point(105, 234);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 16;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(689, 337);
-            this.Controls.Add(this.button3);
+            this.ClientSize = new System.Drawing.Size(689, 365);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.textBox5);
@@ -253,7 +256,7 @@
         private System.Windows.Forms.ToolStripMenuItem vizualizareAngajatiToolStripMenuItem;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ToolStripMenuItem creereContCryptatToolStripMenuItem;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
