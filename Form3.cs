@@ -23,20 +23,20 @@ namespace INFO2017
         private void button1_Click(object sender, EventArgs e)
         {
             MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("horatiu.kuhaku@gmail.com".ToString());
-            mail.To.Add("horatiuyo@gmail.com".ToString());
+            mail.From = new MailAddress("email@gmail.com".ToString());
+            mail.To.Add("email@gmail.com".ToString());
             mail.Subject = "Cerere angajat".ToString();
             mail.Body = textBox1.Text;
 
             //SmtpClient sc = new SmtpClient("smtp.gmail.com");
             //sc.Port = 25;
-            //sc.Credentials = new NetworkCredential("email adress".ToString(),"email pass".ToString());
+            //sc.Credentials = new NetworkCredential("email@gmail.com".ToString(),"email pass".ToString());
             //sc.EnableSsl = true;
             //sc.Send(mail);
 
             using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
             {
-                smtp.Credentials = new NetworkCredential("email", "pass");
+                smtp.Credentials = new NetworkCredential("email@gmail.com", "pass");
                 smtp.EnableSsl = true;
                 smtp.Send(mail);
             }
