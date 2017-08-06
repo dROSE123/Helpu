@@ -30,13 +30,13 @@ namespace INFO2017
 
             //SmtpClient sc = new SmtpClient("smtp.gmail.com");
             //sc.Port = 25;
-            //sc.Credentials = new NetworkCredential("horatiuyo@gamil.com".ToString(), "dwcdtryv7727".ToString());
+            //sc.Credentials = new NetworkCredential("email adress".ToString(),"email pass".ToString());
             //sc.EnableSsl = true;
             //sc.Send(mail);
 
             using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
             {
-                smtp.Credentials = new NetworkCredential("horatiu.kuhaku@gmail.com", "dwcdtryv7727");
+                smtp.Credentials = new NetworkCredential("email", "pass");
                 smtp.EnableSsl = true;
                 smtp.Send(mail);
             }
